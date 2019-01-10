@@ -776,6 +776,11 @@ try:
     import win32com
     import win32com.client
 
+    def _decrease_size_title(slide):
+        fontsize = slide.shapes.title.textframe.textrange.font.size
+        slide.shapes.title.textframe.textrange.font.size = max(fontsize-8, 10)
+        slide.shapes.title.height = max(slide.shapes.title.height-20, 50)
+
     def addPPTslide(title=None, fig=None, txt=None, notes=None, figsize=None,
                     subtitle=None, maintext=None, show=False, verbose=1,
                     activate_slide=True, ppLayout=None, extranotes=None):
@@ -872,6 +877,10 @@ try:
         else:
             slide.shapes.title.textframe.textrange.text = 'QCoDeS measurement'
 
+        latest_slide=ppt.Slides(ppt.Slides.Count)
+
+        _decrease_size_title(latest_slide)
+        
         import qtt.measurements.ttrace  # should be moved to top when circular references are fixed
         from qtt.measurements.videomode import VideoMode  # import here, to prevent default imports of gui code
 
@@ -960,7 +969,7 @@ try:
                     print('slide width height: %s' % (slidewh,))
                     print('image width height: %d, %d' % (width, height))
             if verbose >= 2:
-                print('fname %s' % fname)
+                print('fname %s, addpicture top %d' % (fname, top))
             slide.Shapes.AddPicture(FileName=fname, LinkToFile=False,
                                     SaveWithDocument=True, Left=left, Top=top, Width=width, Height=height)
 
