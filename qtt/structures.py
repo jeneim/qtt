@@ -324,7 +324,16 @@ class sensingdot_t:
         gr.increment(self._detune_axis[1] * value)
 
     def scan2D(sd, ds=90, stepsize=4, fig=None, verbose=1):
-        """Make 2D-scan of the sensing dot."""
+        """Make 2D-scan of the sensing dot.
+        
+        Args:
+            ds (float): half the scan range
+            stepsize (float): step size for the scan
+            fig (None or int)
+        Returns:
+            dataset: recorded data
+    
+        """
         gv = sd.station.gates.allvalues()
 
         gg = sd.gg
